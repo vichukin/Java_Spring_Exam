@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body >
+<div class="container">
+    <div class="row">
+        <div class="col col-4"></div>
+        <div class="col col-4">
+            <form method="post">
+                <div class="mb-3">
+                    <h2 class="w-100 text-center">Class</h2>
+                </div>
+                <div class="mb-3">
+                    <label  class="form-label w-100">Class name:<input th:value="${cl.getName()}" required name="name" type="text" class="form-control"></label>
+                </div>
+                <div class="mb-3">
+                    <label  class="w-100">School:
+                        <select onchange="getTeachersOnSelect(event)" class="form-select" name="school" >
+                            <option value="0" >Choose school</option>
+                            <option th:each="item: ${schools}" th:text="${item.getName()}" th:value="${item.getId()}" th:selected="${cl.getSchool().getId()==item.getId()}"></option>
+                        </select>
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <label class="w-100" >Teacher:
+                        <select th:disabled="${cl.getSchool().getTeachers().size()==0}" class="form-select" name="teacher" id="teacher" >
+                            <option th:selected="${cl.getTeacher()==null}" value="0" th:text="${cl.getSchool().getTeachers().size()>0?'Choose teacher':'No one teacher in this school'}" ></option>
+                            <option th:each="item: ${cl.getSchool().getTeachers()}" th:value="${item.getId()}" th:selected="${cl.getTeacher()!=null&&cl.getTeacher().getId()==item.getId()}" th:text="${item.getFullname()}"></option>
+                        </select>
+                    </label>
+                </div>
+                <div class="btn-group w-100">
+                    <button class="btn btn-outline-success">Save</button>
+                    <a href="/admin/classes" class="btn btn-outline-secondary">Back to list</a>
+                </div>
+            </form>
+        </div>
+        <div class="col col-4"></div>
+    </div>
+</div>
+<script>
+    let teacherSel = document.getElementById("teacher");
+    async function getTeachersOnSelect(e){
+        let schoolId = e.target.value;
+        if(schoolId!=0)
+        {
+            let res = await fetch(`http://localhost:8080/api/teachers/${schoolId}`);
+            if(res.ok)
+            {
+                let teachers = await res.json();
+
+                if(teachers.length>0)
+                {
+                    teacherSel.innerHTML="<option value='0' selected>Choose teacher</option>";
+                    teacherSel.disabled = false;
+                    for(let teacher of teachers)
+                        teacherSel.innerHTML+=`<option value="${teacher.id}">${teacher.fullname}</option>`
+                }
+                else
+                {
+                    teacherSel.innerHTML="<option value='0' selected>No one teacher in this school</option>";
+                    teacherSel.disabled=true;
+                }
+
+                console.log(teachers);
+            }
+        }
+        else
+        {
+            teacherSel.innerHTML="<option value='0'  selected>Firstly choose school</option>";
+            teacherSel.disabled = true;
+        }
+    }
+</script>
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>

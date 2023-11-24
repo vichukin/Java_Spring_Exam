@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Welcome to Your Electronic Diary</title>
+    <!-- Add your additional head elements here -->
+</head>
+<header th:insert="sections/header ::header">
+    <!-- You can add a navigation bar or other header content here -->
+</header>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <th:block th:if="${user==null}">
+                <h1>Welcome to Your Electronic Diary Service</h1>
+                <p>
+                    Explore the convenience of managing your daily activities and tasks with our electronic diary.
+                </p>
+                <p>
+                    To get started, please <a href="/login">log in</a> or <a href="/registration">register</a>.
+                </p>
+            </th:block>
+
+            <th:block th:if="${user!=null}">
+                <h1>Welcome back to Your Electronic Diary!</h1>
+                <p>
+                    Explore the convenience of managing your daily activities and tasks with our electronic diary.
+                </p>
+                <p>
+                    To start using your diary, <a href="/journal">click here</a>.
+                </p>
+            </th:block>
+            <h2>Key Features:</h2>
+            <ul>
+                <li>Effortlessly organize your schedule and tasks.</li>
+                <li>Set reminders and receive notifications.</li>
+                <li>Securely store and access your information from anywhere.</li>
+                <li>Collaborate with others on shared projects.</li>
+            </ul>
+            <p>
+                Ready to boost your productivity? Join us today!
+            </p>
+        </div>
+        <!-- You can add more content or sections as needed -->
+    </div>
+</div>
+</body>
+<footer th:insert="sections/footer ::footer">
+    <!-- You can add footer content or links here -->
+</footer>
+</html>

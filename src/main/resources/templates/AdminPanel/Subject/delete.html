@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body >
+<div class="container">
+    <div class="row">
+        <div class="col col-4"></div>
+        <div class="col col-4">
+            <form method="post">
+                <input type="hidden" th:value="${item.getId()}" name="itemId">
+                <div class="mb-3">
+                    <h3>Are you sure to delete subject?</h3>
+                </div>
+                <div class="mb-3">
+                    <h5 th:text="'Name - '+${item.getName()}"></h5>
+                </div>
+                <div class="btn-group w-100">
+                    <button class="btn btn-outline-danger">Delete</button>
+                    <a href="/admin/subjects" class="btn btn-outline-secondary">Back to list</a>
+                </div>
+            </form>
+        </div>
+        <div class="col col-4"></div>
+    </div>
+</div>
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>

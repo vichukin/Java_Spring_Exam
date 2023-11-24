@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body>
+<div class="container">
+    <div class="row">
+        <th:block th:insert="sections/userPanelMenu ::userPanelMenu">
+
+        </th:block>
+        <div class="col col-9">
+            <div class="row p-4 border school-header">
+                <div ><label class="fw-bold fs-5 me-3">School: </label><label class="fs-5" th:text="${item.getSchool().getName()}"></label></div>
+                <div ><label class="fw-bold fs-5 me-3">Class: </label><label class="fs-5" th:text="${item.getName()}"></label></div>
+                <div ><label class="fw-bold fs-5 me-3">Teacher: </label><label class="fs-5" th:text="${item.getTeacher()!=null?item.getTeacher().getFullname():'-'}"></label></div>
+                <div ><label class="fw-bold fs-5 me-3">Members: </label><label class="fs-5" th:text="${item.getMembers().size()}"></label></div>
+            </div>
+            <div class="row p-4 border ">
+                <div class="school-content">
+                    <div class="row">
+                        <div class="btn-group ">
+                            <a th:href="'?member=0'+${choose!=null?'&choose='+choose:''}" th:class="'btn '+${(lesson==null&&member==null)||member!=null?'btn-primary':'btn-secondary'}">Members</a>
+                            <a th:href="'?lesson=0'+${choose!=null?'&choose='+choose:''}"   th:class="'btn  '+${lesson!=null?'btn-primary':'btn-secondary'}">Lessons</a>
+                        </div>
+
+                    </div>
+                    <div class="row overflow-y">
+                        <table class="table table-striped">
+                            <thead >
+                            <tr th:if="${(lesson==null&&member==null)||member!=null}">
+                                <th>Id</th>
+                                <th>Fullname</th>
+                                <th></th>
+                            </tr>
+                            <tr th:if="${lesson!=null}">
+                                <th>Id</th>
+                                <th>Lesson</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item: ${members}">
+                                <td th:text="${item.getId()}"></td>
+                                <td th:text="${item.getFullname()}"></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
+                                        <a href="" class="btn btn-outline-primary">Details</a>
+                                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete from class</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:each="item: ${lessons}">
+                                <td th:text="${item.getId()}"></td>
+                                <td th:text="${item.getSubject().getSubject().getName()}+' '+${item.getSchoolClass().getName()}"></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
+                                        <a href="" class="btn btn-outline-primary">Details</a>
+                                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete from class</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+
+</html>

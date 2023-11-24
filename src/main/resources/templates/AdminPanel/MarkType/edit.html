@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body >
+<div class="container">
+    <div class="row">
+        <div class="col col-4"></div>
+        <div class="col col-4">
+            <form method="post">
+                <input type="hidden" th:value="${item.getId()}" name="itemId">
+                <div class="mb-3"><label  class="form-label w-100">Subject name:<input required th:value="${item.getName()}" name="name" type="text" class="form-control"></label></div>
+
+                <div class="btn-group w-100">
+                    <button class="btn btn-outline-success">Save</button>
+                    <a href="/admin/marktypes" class="btn btn-outline-secondary">Back to list</a>
+                </div>
+            </form>
+        </div>
+        <div class="col col-4"></div>
+    </div>
+</div>
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>

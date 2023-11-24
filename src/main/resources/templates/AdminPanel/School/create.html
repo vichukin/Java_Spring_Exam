@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body >
+<div class="container">
+    <div class="row">
+        <div class="col col-4"></div>
+            <div class="col col-4">
+                <form method="post">
+                    <div class="mb-3">
+                        <h2 class="w-100 text-center">School</h2>
+                    </div>
+                    <div class="mb-3"><label  class="form-label w-100">School name:<input type="text" name="name" class="form-control"></label></div>
+                    <div class="mb-3"><label  class="form-label w-100">Subjects:
+                        <input id="search" onkeyup="findSubjects(event)"  type="text" class="form-control"></label>
+                        <ul class="chooseList" id="subjects">
+
+                        </ul>
+                        <div class="result row" id="result">
+
+                        </div>
+                    </div>
+                    <div class="btn-group w-100">
+                        <button class="btn btn-outline-success">Create</button>
+                        <a href="/admin/schools" class="btn btn-outline-secondary">Back to list</a>
+                    </div>
+                </form>
+            </div>
+        <div class="col col-4"></div>
+    </div>
+</div>
+<script th:inline="javascript">
+
+    let choosed = [];
+    /*<![CDATA[*/
+    var yourArray = /*[[${array}]]*/ [];
+    /*]]>*/
+    let subj = document.getElementById("subjects");
+    let res = document.getElementById("result");
+    for(let i=0; i<yourArray.length;i++)
+    {
+        subj.innerHTML+=`<li class="subjitem" id="subjitem${yourArray[i].id}">${yourArray[i].name}</li>`
+    }
+    function addEventOnSubjItem(){
+        $(`.subjitem`).on("click",(event)=>{
+            let text = event.target.innerText;
+            let id = event.target.id;
+
+            subj.removeChild(subj.children.namedItem(id));
+            let itemId = id.slice(-id.length+8)
+            let obj = yourArray.find(t=>t.id==itemId);
+            choosed.push(obj);
+            yourArray = yourArray.filter(t=>t.id!=itemId);
+            // console.log(yourArray);
+            // console.log(choosed);
+            res.innerHTML+=`
+            <div class="resitem col col-6" id="resitem${obj.id}" >
+                <div class=" d-flex">
+                <input type="hidden" name="subjects" value="${obj.id}">
+                <h5 >${obj.name}</h5>
+                <div id="del${obj.id}" onclick="deleteSubject(event)" class="cancelResBtn"><img class="w-100" src="https://examjava.blob.core.windows.net/icons/cancel.png"></div>
+                </div>
+            </div>
+            `
+            if(yourArray.length==0)
+                document.getElementById("search").disabled=true;
+
+        })
+    }
+    addEventOnSubjItem();
+    function deleteSubject(e){
+        let id = e.currentTarget.id;
+        let subjId = id.slice(-id.length+3);
+        let obj = choosed.find(t=>t.id==subjId);
+        yourArray.push(obj);
+        choosed = choosed.filter(t=>t.id!=subjId);
+        res.removeChild(res.children.namedItem(`resitem${obj.id}`));
+        if(yourArray.length>0&&document.getElementById("search").disabled)
+            document.getElementById("search").disabled=false;
+        findSubjects();
+    }
+    let word ="";
+    function findSubjects(e){
+        if(e!=null)
+        {
+            let searchWord = e.target.value;
+            word = searchWord;
+        }
+        let ar = yourArray.filter(t=>t.name.toLowerCase().includes(word.toLowerCase()))
+        subj.innerHTML="";
+        for(let i=0; i<ar.length;i++)
+        {
+            subj.innerHTML+=`<li class="subjitem" id="subjitem${ar[i].id}">${ar[i].name}</li>`
+        }
+        addEventOnSubjItem();
+    }
+</script>
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>

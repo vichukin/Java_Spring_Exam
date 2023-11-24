@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body >
+<div class="container">
+  <div class="row">
+    <div class="col col-4"></div>
+    <div class="col col-4">
+      <form method="post">
+        <div class="mb-3">
+          <h2 class="w-100 text-center">Class</h2>
+        </div>
+        <div class="mb-3">
+          <label  class="form-label w-100">Class name:<input required name="name" type="text" class="form-control"></label>
+        </div>
+        <div class="mb-3">
+          <label  class="w-100">School:
+            <select onchange="getTeachersOnSelect(event)" class="form-select" name="school" >
+              <option value="0" selected>Choose school</option>
+              <option th:each="item: ${schools}" th:text="${item.getName()}" th:value="${item.getId()}"></option>
+            </select>
+          </label>
+        </div>
+        <div class="mb-3">
+          <label class="w-100" >Teacher:
+            <select disabled class="form-select" name="teacher" id="teacher" >
+              <option value="0" selected>Firstly choose school</option>
+            </select>
+          </label>
+        </div>
+        <div class="mb-3">
+          <label class="w-100" >Members:
+            <input disabled id="search" onkeyup="findmembers(event)" value="Firstly choose school"  type="text" class="form-control"></label>
+            <ul class="chooseList" id="members">
+
+            </ul>
+            <div class="result row" id="result">
+
+            </div>
+          </label>
+        </div>
+        <div class="btn-group w-100">
+          <button class="btn btn-outline-success">Create</button>
+          <a href="/admin/classes" class="btn btn-outline-secondary">Back to list</a>
+        </div>
+      </form>
+    </div>
+    <div class="col col-4"></div>
+  </div>
+</div>
+<script>
+  let teacherSel = document.getElementById("teacher");
+  let choosed = [];
+  let yourArray = [];
+  let memb = document.getElementById("members");
+  let result = document.getElementById("result");
+  let search = document.getElementById("search");
+  async function getTeachersOnSelect(e){
+    choosed=[];
+    yourArray=[];
+    memb.innerHTML="";
+    result.innerHTML="";
+    let schoolId = e.target.value;
+    if(schoolId!=0)
+    {
+      search.disabled=false;
+      search.value= search.value=="Firstly choose school"?"":search.value;
+      let res = await fetch(`http://localhost:8080/api/teachers/${schoolId}`);
+      if(res.ok)
+      {
+        let teachers = await res.json();
+
+        if(teachers.length>0)
+        {
+          teacherSel.innerHTML="<option value='0' selected>Choose teacher</option>";
+          teacherSel.disabled = false;
+          for(let teacher of teachers)
+            teacherSel.innerHTML+=`<option value="${teacher.id}">${teacher.fullname}</option>`
+        }
+        else
+        {
+          teacherSel.innerHTML="<option value='0' selected>No one teacher in this school</option>";
+          teacherSel.disabled=true;
+        }
+
+        console.log(teachers);
+      }
+      res = await fetch(`http://localhost:8080/api/members/${schoolId}`);
+      if(res.ok)
+      {
+        let members = await res.json();
+        if(members!=null&&members.length>0)
+        {
+          search.value = search.value=="No one member in this school"?"":search.value;
+          yourArray= members;
+          addStartElements();
+          addEventOnMembItem();
+        }
+        else
+        {
+          search.disabled=true;
+          search.value="No one member in this school";
+        }
+
+      }
+
+    }
+    else
+    {
+      search.value="Firstly choose school";
+      search.disabled=true;
+      teacherSel.innerHTML="<option value='0'  selected>Firstly choose school</option>";
+      teacherSel.disabled = true;
+    }
+  }
+
+
+
+  function addStartElements()
+  {
+    for(let i=0; i<yourArray.length;i++)
+    {
+      memb.innerHTML+=`<li class="membitem" id="membitem${yourArray[i].id}">${yourArray[i].fullname}</li>`
+    }
+  }
+  function addEventOnMembItem(){
+    $(`.membitem`).on("click",(event)=>{
+      let text = event.target.innerText;
+      let id = event.target.id;
+
+      memb.removeChild(memb.children.namedItem(id));
+      let itemId = id.slice(-id.length+8)
+      let obj = yourArray.find(t=>t.id==itemId);
+      choosed.push(obj);
+      yourArray = yourArray.filter(t=>t.id!=itemId);
+      // console.log(yourArray);
+      // console.log(choosed);
+      result.innerHTML+=`
+            <div class="resitem col col-6" id="resitem${obj.id}" >
+                <div class=" d-flex">
+                <input type="hidden" name="members" value="${obj.id}">
+                <h5 >${obj.fullname}</h5>
+                <div id="del${obj.id}" onclick="deletemembect(event)" class="cancelResBtn"><img class="w-100" src="https://examjava.blob.core.windows.net/icons/cancel.png"></div>
+                </div>
+            </div>
+            `
+      if(yourArray.length==0)
+        document.getElementById("search").disabled=true;
+
+    })
+  }
+
+  function deletemembect(e){
+    let id = e.currentTarget.id;
+    let membId = id.slice(-id.length+3);
+    let obj = choosed.find(t=>t.id==membId);
+    yourArray.push(obj);
+    choosed = choosed.filter(t=>t.id!=membId);
+    result.removeChild(result.children.namedItem(`resitem${obj.id}`));
+    if(yourArray.length>0&&document.getElementById("search").disabled)
+      document.getElementById("search").disabled=false;
+    findmembers();
+  }
+  let word ="";
+  function findmembers(e){
+    if(e!=null)
+    {
+      let searchWord = e.target.value;
+      word = searchWord;
+    }
+    let ar = yourArray.filter(t=>t.fullname.toLowerCase().includes(word.toLowerCase()))
+    memb.innerHTML="";
+    for(let i=0; i<ar.length;i++)
+    {
+      memb.innerHTML+=`<li class="membitem" id="membitem${ar[i].id}">${ar[i].fullname}</li>`
+    }
+    addEventOnMembItem();
+  }
+</script>
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>

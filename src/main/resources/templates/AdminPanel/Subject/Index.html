@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body>
+<div class="container">
+    <div class="row">
+        <h2>Subjects</h2>
+        <div class="mb-3">
+            <a class="btn btn-outline-success" href="/admin/subjects/create">Create subject</a>
+        </div>
+        <hr>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item: ${list}">
+                <td th:text="${item.getId()}"></td>
+                <td th:text="${item.getName()}"></td>
+                <td>
+                    <div class="btn-group">
+                        <a th:href="'/admin/subjects/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
+                        <a th:href="'/admin/subjects/delete/'+${item.getId()}"  class="btn btn-outline-danger">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>

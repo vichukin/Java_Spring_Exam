@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body>
+<div class="container">
+    <div class="row">
+        <th:block th:insert="sections/userPanelMenu ::userPanelMenu">
+
+        </th:block>
+        <div class="col col-9">
+            <div class="row p-4 border school-header">
+                <div ><label class="fw-bold fs-5 me-3">School: </label><label class="fs-5" th:text="${item.getName()}"></label></div>
+                <div ><label class="fw-bold fs-5 me-3">Classes: </label><label class="fs-5" th:text="${item.getClasses().size()}"></label></div>
+                <div ><label class="fw-bold fs-5 me-3">Teachers: </label><label class="fs-5" th:text="${item.getTeachers().size()}"></label></div>
+                <div ><label class="fw-bold fs-5 me-3">Members: </label><label class="fs-5" th:text="${item.getMembers().size()}"></label></div>
+            </div>
+            <div class="row p-4 border ">
+                <div class="school-content">
+                    <div class="row">
+                        <div class="btn-group ">
+                            <a th:href="'?class_=0'+${choose!=null?'&choose='+choose:''}"   th:class="'btn  '+${(teacher==null&&class_==null&&subject==null&&member==null)||   class_!=null?'btn-primary':'btn-secondary'}">Classes</a>
+                            <a th:href="'?teacher=0'+${choose!=null?'&choose='+choose:''}" th:class="'btn  '+${teacher!=null?'btn-primary':'btn-secondary'}">Teachers</a>
+                            <a th:href="'?member=0'+${choose!=null?'&choose='+choose:''}" th:class="'btn '+${member!=null?'btn-primary':'btn-secondary'}">Members</a>
+                            <a th:href="'?subject=0'+${choose!=null?'&choose='+choose:''}" th:class="'btn '+${subject!=null?'btn-primary':'btn-secondary'}">Subjects</a>
+                        </div>
+
+                    </div>
+                    <div class="row overflow-y">
+                        <table class="table table-striped">
+                            <thead >
+                                <tr th:if="${(teacher==null&&class_==null&&subject==null&&member==null)||class_!=null}">
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>School</th>
+                                    <th>Teacher</th>
+                                    <th>Members</th>
+                                    <th></th>
+                                </tr>
+                                <tr th:if="${teacher!=null}">
+                                    <th>Id</th>
+                                    <th>Fullname</th>
+                                    <th>Is director?</th>
+                                    <th>Classes</th>
+                                    <th>Lessons</th>
+                                    <th></th>
+                                </tr>
+                                <tr th:if="${subject!=null}">
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th></th>
+                                </tr>
+                                <tr th:if="${member!=null}">
+                                    <th>Id</th>
+                                    <th>Fullname</th>
+                                    <th></th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                            <tr th:each="item: ${classes}">
+                                <td th:text="${item.getId()}"></td>
+                                <td th:text="${item.getName()}"></td>
+                                <td th:text="${item.getSchool().getName()}"></td>
+                                <td th:text="${item.getTeacher()!=null?item.getTeacher().getFullname():'-'}"></td>
+                                <td th:text="${item.getMembers().size()}"></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
+                                        <a href="" class="btn btn-outline-primary">Details</a>
+                                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:each="item: ${teachers}">
+                                <td th:text="${item.getId()}"></td>
+                                <td th:text="${item.getFullname()}"></td>
+                                <td th:text="${item.isDirector}"></td>
+                                <td >
+                                    <div class="subjects">
+                                        <p th:each="it: ${item.getClasses()}" th:text="${it.getName()}"></p>
+                                    </div>
+                                </td>
+                                <td >
+                                    <div class="subjects">
+                                        <p th:each="it: ${item.getLessons()}" th:text="${it.getSubject().getSubject().getName()}+' '+${it.getSchoolClass().getName()}"></p>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="btn-group">
+                                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
+                                        <a href="" class="btn btn-outline-primary">Details</a>
+                                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:each="item: ${subjects}">
+                                <td th:text="${item.getId()}"></td>
+                                <td th:text="${item.getSubject().getName()}"></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a th:href="'/admin/subjects/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
+                                        <a th:href="'/admin/subjects/delete/'+${item.getId()}"  class="btn btn-outline-danger">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:each="item: ${members}">
+                                <td th:text="${item.getId()}"></td>
+                                <td th:text="${item.getFullname()}"></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
+                                        <a href="" class="btn btn-outline-primary">Details</a>
+                                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete from school</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+
+</html>

@@ -1,0 +1,128 @@
+<div th:fragment="userPanelMenu" class="col col-3 " >
+    <div class="row">
+        <div class="btn-group w-100 p-0">
+            <a href="?choose=1" th:class="'btn '+${choose==null||choose==1?'btn-primary':'btn-secondary'}">Schools</a>
+            <a href="?choose=2" th:class="'btn '+${choose!=null&&choose==2?'btn-primary':'btn-secondary'}">Classes</a>
+            <a href="?choose=3" th:class="'btn '+${choose!=null&&choose==3?'btn-primary':'btn-secondary'}">Lessons</a>
+        </div>
+    </div>
+    <div class="row menu">
+        <div class="ps-2">
+            <div th:if="${choose==null||choose==1}" th:each="item: ${schools}" th:id="'school'+${item.getId()}" >
+                <div class="d-flex menu-item"><span th:id="'schoolDrop'+${item.getId()}" onclick="schoolDrop(event)" th:class="'bi fs-6 menu-img '+${school!=null&&school==item.getId()?'bi-caret-up-fill':'bi-caret-down-fill'}"></span><a class="w-100 menu-link"  th:href="'/journal/school/'+${item.getId()}" th:text="${item.getName()}"></a></div>
+                <div th:id="'schoolResult'+${item.getId()}" th:if="${school==null||school!=item.getId()}" >
+
+                </div>
+                <div th:id="'schoolResult'+${item.getId()}" th:if="${school!=null&&school==item.getId()}" >
+                    <div>
+                        <div class="ms-3 d-flex menu-item">
+                            <span th:id="'classDrop'+${school}" onclick="classDrop(event)" th:class="'bi fs-6 menu-img '+${class_!=null?'bi-caret-up-fill':'bi-caret-down-fill'}"></span>
+                            <a th:href="'?class_=0'" class="menu-link w-100">Classes</a>
+                        </div>
+                        <div th:id="'classResult'+${school}" class="ms-3" >
+                            <th:block th:if="${class_!=null}">
+                                <div class="ms-3 menu-item" th:each="class: ${classes}">
+                                    <a th:href="'/journal/class/'+${class.getId()}+'?choose='+${choose!=null?choose:1}" class="menu-link w-100" th:text="${class.getName()}"></a>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="ms-3 d-flex menu-item">
+                            <span th:id="'teacherDrop'+${school}" onclick="teacherDrop(event)" th:class="'bi fs-6 menu-img '+${teacher!=null?'bi-caret-up-fill':'bi-caret-down-fill'}"></span>
+                            <a th:href="'?teacher=0'" class="menu-link w-100">Teachers</a>
+                        </div>
+                        <div th:id="'teacherResult'+${school}" class="ms-3">
+                            <th:block th:if="${teacher!=null}">
+                                <div class="ms-3 menu-item" th:each="Teacher: ${teachers}">
+                                    <a th:href="'/journal/teacher/'+${Teacher.getId()}+'?choose='+${choose!=null?choose:1}" class="menu-link w-100" th:text="${Teacher.getFullname()}"></a>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${choose!=null&&choose==2}" >
+                <div th:each="item: ${menuClasses}" class="menu-item"><a class="w-100 menu-link"  th:href="'/journal/class/'+${item.getId()}+'?choose='+${choose}" th:text="${item.getName()}"></a></div>
+
+            </div>
+            <div th:if="${choose!=null&&choose==3}" >
+                <div th:each="item: ${menuLessons}" class="menu-item"><a class="w-100 menu-link"  th:href="'/journal/lesson/'+${item.getId()}+'?choose='+${choose}" th:text="${item.getSubject().getSubject().getName()}+' '+${item.getSchoolClass().getName()}"></a></div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        async function schoolDrop(e)
+        {
+            let clas = e.currentTarget.className;
+            let id = e.currentTarget.id
+            let schoolId = id.slice(-id.length+10)
+            let result = document.getElementById(`schoolResult${schoolId}`)
+            if(clas=="bi fs-6 bi-caret-down-fill menu-img")
+            {
+                e.currentTarget.className="bi fs-6 bi-caret-up-fill menu-img"
+                result.innerHTML+=`<div><div class="ms-3 d-flex menu-item"><span id="classDrop${schoolId}" onclick="classDrop(event)" class="bi fs-6 bi-caret-down-fill menu-img"></span><a href="?school=${schoolId}&class_=0" class="menu-link w-100">Classes</a></div> <div id="classResult${schoolId}" class="ms-3"></div></div>`
+                result.innerHTML+=`<div><div class="ms-3 d-flex menu-item"><span id="teacherDrop${schoolId}" onclick="teacherDrop(event)" class="bi fs-6 bi-caret-down-fill menu-img"></span><a href="?school=${schoolId}&teacher=0" class="menu-link w-100">Teachers</a></div> <div id="teacherResult${schoolId}" class="ms-3"></div></div>`
+
+            }
+            else
+            {
+                result.innerHTML="";
+                e.currentTarget.className="bi fs-6 bi-caret-down-fill menu-img"
+            }
+
+        }
+        async function classDrop(e) {
+            let clas = e.currentTarget.className;
+            let id = e.currentTarget.id
+            let schoolId = id.slice(-id.length + 9)
+            let result = document.getElementById(`classResult${schoolId}`)
+            if(clas=="bi fs-6 bi-caret-down-fill menu-img")
+            {
+                e.currentTarget.className="bi fs-6 bi-caret-up-fill menu-img"
+                let res = await fetch(`http://localhost:8080/api/classes/${schoolId}`);
+                if(res.ok)
+                {
+                    let classes = await res.json();
+                    result.innerHTML=""
+                    for(item of classes)
+                    {
+                        result.innerHTML+=`<div class="ms-3 menu-item"><a href="/journal/class/${item.id}" class="menu-link w-100">${item.name}</a></div>`
+                    }
+                }
+            }
+            else
+            {
+                result.innerHTML="";
+                e.currentTarget.className="bi fs-6 bi-caret-down-fill menu-img"
+            }
+        }
+        async function teacherDrop(e) {
+            let clas = e.currentTarget.className;
+            let id = e.currentTarget.id
+            let schoolId = id.slice(-id.length + 11)
+            let result = document.getElementById(`teacherResult${schoolId}`)
+            if(clas=="bi fs-6 bi-caret-down-fill menu-img")
+            {
+                e.currentTarget.className="bi fs-6 bi-caret-up-fill menu-img"
+                let res = await fetch(`http://localhost:8080/api/teachers/${schoolId}`);
+                if(res.ok)
+                {
+                    let teachers = await res.json();
+                    result.innerHTML=""
+                    for(item of teachers)
+                    {
+                        result.innerHTML+=`<div class="ms-3 d-flex menu-item"><a href="/journal/teacher/${item.id}" class="menu-link w-100">${item.fullname}</a></div> `
+                    }
+                }
+            }
+            else
+            {
+                result.innerHTML="";
+                e.currentTarget.className="bi fs-6 bi-caret-down-fill menu-img"
+            }
+        }
+
+    </script>
+</div>

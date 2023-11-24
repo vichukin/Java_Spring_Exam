@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body>
+<div class="container">
+    <div class="row">
+        <th:block th:insert="sections/userPanelMenu ::userPanelMenu">
+            <!-- Add user panel menu content here -->
+        </th:block>
+        <div class="col col-9">
+            <div class="row p-4 ">
+                <h2>Instructions for Using Your Electronic Diary</h2>
+                <p>
+                    Welcome to your electronic diary! Here's a quick guide on how to navigate and use the features:
+                </p>
+                <h3>Schools:</h3>
+                <p>
+                    In the "Schools" tab, you can view the schools you are associated with. Depending on your role, whether you're a director or a teacher, you will have access to specific information related to your position.
+                </p>
+
+                <h3>Classes:</h3>
+                <p>
+                    Navigate to the "Classes" tab to explore the available classes. Directors will have visibility into all classes, while teachers will only see their assigned classes.
+                </p>
+
+                <h3>Lessons:</h3>
+                <p>
+                    Explore the "Lessons" tab to view and manage your lessons. Directors will have access to all lessons, whereas teachers will only see lessons associated with their classes.
+                </p>
+            </div>
+    </div>
+</div>
+
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>

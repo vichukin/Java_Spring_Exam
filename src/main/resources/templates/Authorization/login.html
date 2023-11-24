@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col col-4"></div>
+    <div class="col col-4">
+      <form class="mt-5" method="post">
+        <h2 class="text-center">Log in</h2>
+        <div class="mb-3">Login:<label class="w-100" ><input type="text" class="form-control" name="login"></label></div>
+        <div class="mb-3">Password:<label class="w-100"><input type="password" class="form-control" name="password"></label></div>
+        <div class="btn-group w-100">
+          <button class="btn btn-outline-success">Log in</button>
+          <a href="/registration" class="btn btn-outline-primary">Register</a>
+        </div>
+      </form>
+    </div>
+    <div class="col col-4"></div>
+  </div>
+</div>
+
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>

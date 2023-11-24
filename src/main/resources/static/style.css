@@ -1,0 +1,96 @@
+.chooseList{
+    list-style: none;
+    padding: 0;
+    overflow-y:auto;
+    max-height: 20vh;
+}
+.chooseList>*{
+    border-radius: 20px;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    background-color: rgb(245,245,245);
+    word-wrap: break-word;
+}
+.chooseList>li:hover{
+    background-color: rgb(235,235,235);
+    cursor: pointer;
+}
+.result{
+    overflow-y:auto;
+    max-height: 20vh;
+}
+.resitem{
+    word-wrap: break-word;
+
+
+    margin-bottom: 2%;
+    padding-right: 2%;
+}
+.resitem>div>h5{
+    width: 80%;
+    margin: auto;
+
+}
+.cancelResBtn:hover{
+    cursor: pointer;
+}
+.cancelResBtn{
+    width: 14%;
+    display: flex;
+    align-items: center;
+}
+.resitem>div{
+    padding: 5%;
+    background-color: rgb(245,245,245);
+    height: 100%;
+    border-radius: 10px;
+}
+.container{
+    min-height: 75vh;
+}
+footer{
+    max-height: 5vh;
+}
+.subjects{
+    max-height: 15vh;
+    overflow-y: auto;
+}
+.subjects>p{
+    margin-bottom: 1%;
+}
+.menu>*{
+    background-color: rgb(245,245,245);
+    min-height: 70vh;
+    list-style: none;
+}
+.menu-link{
+    display: inline-block;
+    text-decoration: none;
+    color:black;
+    font-weight: bold;
+}
+.menu-item:hover{
+    background-color: rgb(235,235,235);
+
+}
+.menu-img
+{
+    cursor: pointer;
+}
+.school-header
+{
+    min-height: 20vh;
+}
+.school-content{
+    min-height: 45.5vh;
+    max-height: 45.5vh;
+
+}
+.max-content{
+    height: max-content;
+    width: max-content;
+}
+.overflow-y{
+    overflow-y: auto;
+}

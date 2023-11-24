@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body>
+<div class="container">
+    <div class="row">
+        <h2>Classes</h2>
+        <div class="mb-3">
+            <a class="btn btn-outline-success" href="/admin/classes/create">Create class</a>
+        </div>
+        <hr>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>School</th>
+                <th>Teacher</th>
+                <th>Members</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item: ${list}">
+                <td th:text="${item.getId()}"></td>
+                <td th:text="${item.getName()}"></td>
+                <td th:text="${item.getSchool().getName()}"></td>
+                <td th:text="${item.getTeacher()!=null?item.getTeacher().getFullname():'-'}"></td>
+                <td th:text="${item.getMembers().size()}"></td>
+                <td>
+                    <div class="btn-group">
+                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
+                        <a href="" class="btn btn-outline-primary">Details</a>
+                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>

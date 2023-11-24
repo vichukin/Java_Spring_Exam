@@ -1,0 +1,32 @@
+
+    <header th:fragment="header" class="d-flex w-100 py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center  mb-3 mb-md-0  link-body-emphasis text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <h4 class="fs-4 max-content">Simple header</h4>
+        </a>
+
+        <ul class="nav nav-pills ps-5 w-100">
+            <li class="nav-item"><a href="/" th:class="'nav-link '+ ${page==1?'active':''}" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="/journal" th:class="'nav-link '+ ${page==7?'active':''}" aria-current="page">Journal</a></li>
+            <li>
+                <div class="dropdown">
+                    <button th:class="'nav-link dropdown-toggle ' + ${page>=2&&page<=6?'active':''}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Admin panel
+                    </button>
+                    <ul th:class="'dropdown-menu '">
+                        <li><a th:class="'dropdown-item '+ ${page==2?'active':''}" href="/admin/schools">Schools</a></li>
+                        <li><a th:class="'dropdown-item '+ ${page==3?'active':''}" href="/admin/subjects">Subjects</a></li>
+                        <li><a th:class="'dropdown-item '+ ${page==4?'active':''}" href="/admin/classes">Classes</a></li>
+                        <li><a th:class="'dropdown-item '+ ${page==5?'active':''}" href="/admin/lessons">Lessons</a></li>
+                        <li><a th:class="'dropdown-item '+ ${page==6?'active':''}" href="/admin/marktypes">Mark types</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li th:if="${user!=null}" class="ms-auto me-4 nav-item">
+                <a href="/logout" class="nav-link">Log out</a>
+            </li>
+            <li th:if="${user==null}" class="ms-auto me-4 nav-item">
+                <a href="/login" class="nav-link">Log in</a>
+            </li>
+        </ul>
+    </header>
