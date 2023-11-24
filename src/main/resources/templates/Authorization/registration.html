@@ -16,9 +16,15 @@
     <div class="col col-4">
       <form class="mt-5" method="post">
         <h2 class="text-center">Registration</h2>
-        <div class="mb-3">Login:<label class="w-100" ><input type="text" class="form-control" name="login"></label></div>
-        <div class="mb-3">Password:<label class="w-100"><input type="password" class="form-control" name="password"></label></div>
-        <div class="mb-3">Confirm password:<label class="w-100"><input type="password" class="form-control" name="confirmPassword"></label></div>
+
+        <div class="mb-3">
+          <label class="w-100" >Login:
+            <div class="fw-bold text-danger" th:if="${logError!=null}">This login already used!</div>
+            <input th:value="${login}" required type="text" class="form-control" name="login"></label></div>
+        <div class="mb-3"><label class="w-100">Password:
+          <div class="fw-bold text-danger" th:if="${passError!=null}">Passwords not matches!</div><input required type="password" class="form-control" name="password"></label></div>
+        <div class="mb-3"><label class="w-100">Confirm password:
+          <div class="fw-bold text-danger" th:if="${passError!=null}">Passwords not matches!</div><input required type="password" class="form-control" name="confirmPassword"></label></div>
         <div class="btn-group w-100">
           <button class="btn btn-outline-success">Register</button>
           <a href="/login" class="btn btn-outline-primary">Log in</a>

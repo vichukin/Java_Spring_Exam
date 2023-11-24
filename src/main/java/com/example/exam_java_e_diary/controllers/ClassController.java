@@ -2,6 +2,7 @@ package com.example.exam_java_e_diary.controllers;
 
 import com.example.exam_java_e_diary.CookieFunctions;
 import com.example.exam_java_e_diary.models.SchoolClass;
+import com.example.exam_java_e_diary.models.User;
 import com.example.exam_java_e_diary.repositories.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class ClassController {
         model.addAttribute("page",4);
         var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -44,6 +46,7 @@ public class ClassController {
     private String create(HttpServletRequest request,Model model){
         model.addAttribute("page",4);var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -54,9 +57,11 @@ public class ClassController {
     }
     @PostMapping(value = "/admin/classes/create")
     private String create(@RequestParam String name, @RequestParam long school, @RequestParam(required = false) Long teacher, @RequestParam(required = false) Long[] members, HttpServletRequest request,Model model){
-        model.addAttribute("page",4);var user = CookieFunctions.getAuthorisedUser(request,userRepository);
+        model.addAttribute("page",4);
+        var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
-        if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
+        model.addAttribute("isAdmin", User.isAdmin(user));
+        if(user==null|| !User.isAdmin(user))
         {
             return "redirect:/";
         }
@@ -96,6 +101,7 @@ public class ClassController {
     private String create(@PathVariable long id, HttpServletRequest request,Model model){
         model.addAttribute("page",4);var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -115,6 +121,7 @@ public class ClassController {
     private String create(@PathVariable long id,@RequestParam String name, @RequestParam long school, @RequestParam(required = false) Long teacher, HttpServletRequest request,Model model){
         model.addAttribute("page",4);var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";

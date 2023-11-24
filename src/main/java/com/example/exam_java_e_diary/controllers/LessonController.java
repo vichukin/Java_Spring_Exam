@@ -3,6 +3,7 @@ package com.example.exam_java_e_diary.controllers;
 import com.example.exam_java_e_diary.CookieFunctions;
 import com.example.exam_java_e_diary.models.Lesson;
 import com.example.exam_java_e_diary.models.SchoolSubject;
+import com.example.exam_java_e_diary.models.User;
 import com.example.exam_java_e_diary.repositories.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class LessonController {
         model.addAttribute("page",5);
         var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -47,6 +49,7 @@ public class LessonController {
         model.addAttribute("page",5);
 var user = CookieFunctions.getAuthorisedUser(request,userRepository);
 model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -60,6 +63,7 @@ model.addAttribute("user",user);
         model.addAttribute("page",5);
 var user = CookieFunctions.getAuthorisedUser(request,userRepository);
 model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -128,6 +132,7 @@ model.addAttribute("user",user);
         model.addAttribute("page",5);
 var user = CookieFunctions.getAuthorisedUser(request,userRepository);
 model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -202,6 +207,7 @@ model.addAttribute("user",user);
         model.addAttribute("page",5);
 var user = CookieFunctions.getAuthorisedUser(request,userRepository);
 model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";

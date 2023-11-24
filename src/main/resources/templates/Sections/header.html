@@ -7,9 +7,9 @@
 
         <ul class="nav nav-pills ps-5 w-100">
             <li class="nav-item"><a href="/" th:class="'nav-link '+ ${page==1?'active':''}" aria-current="page">Home</a></li>
-            <li class="nav-item"><a href="/journal" th:class="'nav-link '+ ${page==7?'active':''}" aria-current="page">Journal</a></li>
+            <li class="nav-item"><a href="/journal" th:if="${user!=null}" th:class="'nav-link '+ ${page==7?'active':''}" aria-current="page">Journal</a></li>
             <li>
-                <div class="dropdown">
+                <div class="dropdown" th:if="${user!=null&&isAdmin!=null&&isAdmin==true }">
                     <button th:class="'nav-link dropdown-toggle ' + ${page>=2&&page<=6?'active':''}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Admin panel
                     </button>
@@ -22,7 +22,9 @@
                     </ul>
                 </div>
             </li>
-            <li th:if="${user!=null}" class="ms-auto me-4 nav-item">
+            <li class="nav-item"><a href="/createschool" th:if="${user!=null}" th:class="'nav-link '+ ${page==8?'active':''}" aria-current="page">Create school</a></li>
+            <li th:if="${user!=null}" class="ms-auto me-4 nav-item d-flex">
+                <h5 th:text="${user.getLogin()}" class="m-auto"> </h5>
                 <a href="/logout" class="nav-link">Log out</a>
             </li>
             <li th:if="${user==null}" class="ms-auto me-4 nav-item">

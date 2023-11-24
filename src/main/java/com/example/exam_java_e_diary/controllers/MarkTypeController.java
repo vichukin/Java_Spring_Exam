@@ -2,6 +2,7 @@ package com.example.exam_java_e_diary.controllers;
 
 import com.example.exam_java_e_diary.CookieFunctions;
 import com.example.exam_java_e_diary.models.MarkType;
+import com.example.exam_java_e_diary.models.User;
 import com.example.exam_java_e_diary.repositories.MarkTypeRepository;
 import com.example.exam_java_e_diary.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +39,7 @@ public class MarkTypeController {
         model.addAttribute("page",6);
         var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -49,6 +51,7 @@ public class MarkTypeController {
         model.addAttribute("page",6);
         var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -63,6 +66,7 @@ public class MarkTypeController {
         model.addAttribute("page",6);
         var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -83,6 +87,7 @@ public class MarkTypeController {
         model.addAttribute("page",6);
         var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -104,6 +109,7 @@ public class MarkTypeController {
         model.addAttribute("page",6);
         var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -123,6 +129,7 @@ public class MarkTypeController {
         model.addAttribute("page",6);
         var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";

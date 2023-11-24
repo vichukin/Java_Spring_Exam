@@ -4,6 +4,7 @@ import com.example.exam_java_e_diary.CookieFunctions;
 import com.example.exam_java_e_diary.models.School;
 import com.example.exam_java_e_diary.models.SchoolSubject;
 import com.example.exam_java_e_diary.models.Subject;
+import com.example.exam_java_e_diary.models.User;
 import com.example.exam_java_e_diary.repositories.SchoolRepository;
 import com.example.exam_java_e_diary.repositories.SchoolSubjectRepository;
 import com.example.exam_java_e_diary.repositories.SubjectRepository;
@@ -36,6 +37,7 @@ public class SchoolController {
         model.addAttribute("page",2);
         var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -49,6 +51,7 @@ public class SchoolController {
         model.addAttribute("page",2);
         var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";
@@ -69,6 +72,7 @@ public class SchoolController {
         model.addAttribute("page",2);
         var user = CookieFunctions.getAuthorisedUser(request,userRepository);
         model.addAttribute("user",user);
+        model.addAttribute("isAdmin", User.isAdmin(user));
         if(user==null||user.getRoles().stream().filter(t->t.getRole().getName().equals("Admin")).collect(Collectors.toList()).size()==0)
         {
             return "redirect:/";

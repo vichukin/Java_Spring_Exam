@@ -46,7 +46,6 @@ public class AuthorizationController {
             var u = userRepository.findByLogin(user.getLogin());
             if(u!=null)
             {
-                var pas = hashPassword(user.getPassword());
                 if(verifyPassword(user.getPassword(), u.getPassword()))
                 {
                     addCookie(response,"user",String.valueOf(u.getId()),3600);
@@ -86,10 +85,24 @@ public class AuthorizationController {
         {
             String pas = hashPassword(user.getPassword());
             user.setPassword(pas);
-            userRepository.save(user);
-            addCookie(response,"user",String.valueOf(user.getId()),3600);
-            return "redirect:/";
+            try {
+                userRepository.save(user);
+                addCookie(response,"user",String.valueOf(user.getId()),3600);
+                return "redirect:/";
+            }
+            catch (Exception ex)
+            {
+                model.addAttribute("logError",true);
+            }
+
+
         }
+        else
+        {
+
+            model.addAttribute("passError",true);
+        }
+        model.addAttribute("login",user.getLogin());
         return "Authorization/registration";
     }
     @GetMapping(value = "/logout")

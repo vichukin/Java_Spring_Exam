@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body>
+
+<div class="container">
+    <div class="row">
+        <th:block th:insert="sections/userPanelMenu ::userPanelMenu">
+            <!-- Add user panel menu content here -->
+        </th:block>
+        <div class="col col-9">
+            <div class="row p-4 ">
+                <table  class="table table-striped table-bordered border-dark">
+                    <thead >
+                    <tr th:if="${(mark==null&&member==null)||mark!=null}">
+                        <th>Lesson</th>
+                        <th:block th:each="it: ${#numbers.sequence(0,max)}">
+                            <th th:if="${it!=max}"></th>
+                        </th:block>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  th:each="item: ${marks}">
+                        <td th:text="${item.getKey()}"></td>
+                        <td class="text-center" th:each="mark: ${item.getValue()}" th:text="${mark.getMarkType().getName()}"></td>
+
+                        <th:block th:each="mark: ${#numbers.sequence((item.getValue().size()),max)}" >
+                            <td th:if="${mark!=max}"></td>
+                        </th:block>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>

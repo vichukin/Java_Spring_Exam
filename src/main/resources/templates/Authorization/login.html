@@ -16,8 +16,13 @@
     <div class="col col-4">
       <form class="mt-5" method="post">
         <h2 class="text-center">Log in</h2>
-        <div class="mb-3">Login:<label class="w-100" ><input type="text" class="form-control" name="login"></label></div>
-        <div class="mb-3">Password:<label class="w-100"><input type="password" class="form-control" name="password"></label></div>
+        <div class="mb-3"><label  class="w-100" >
+          Login:
+          <div class="fw-bold text-danger" th:if="${logError!=null}">Wrong login!</div>
+          <input th:value="${login}" type="text" class="form-control" name="login"></label></div>
+        <div class="mb-3"><label class="w-100">Password:
+          <div class="fw-bold text-danger" th:if="${passError!=null}">Wrong password!</div>
+          <input type="password" class="form-control" name="password"></label></div>
         <div class="btn-group w-100">
           <button class="btn btn-outline-success">Log in</button>
           <a href="/registration" class="btn btn-outline-primary">Register</a>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col col-2"></div>
+        <div class="col col-8">
+            <div class="row mt-5">
+                <div class="alert alert-danger" role="alert">
+                    You're not a member of any school. Teacher needs to add you, or you can create your own school
+                </div>
+            </div>
+        </div>
+        <div class="col col-2"></div>
+    </div>
+</div>
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>

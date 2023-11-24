@@ -10,6 +10,145 @@
 
 </header>
 <body>
+<div th:if="${member!=null && isDirector!=null&&isDirector==true}" class="modal fade" id="addMember" tabindex="-1" aria-labelledby="exampleAddMember" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" >Add member</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="addmember" method="post" id="addMemberForm">
+                    <input type="hidden" name="school" th:value="${item.getId()}">
+                    <div>
+                        <label class="form-label w-100">
+                            Fullname:
+                            <input class="form-control" name="fullname">
+                        </label>
+                    </div>
+                    <div>
+                        <label class="form-label w-100">
+                            Member login:
+                            <input class="form-control" name="login">
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button form="addMemberForm"  class="btn btn-success">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:if="${(teacher==null&&class_==null&&subject==null&&member==null)||class_!=null&& isDirector!=null&&isDirector==true}" class="modal fade" id="createClass" tabindex="-1" aria-labelledby="exampleCreateClass" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" >Create class</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="createclass" method="post" id="createClassForm">
+                    <input type="hidden" name="school" th:value="${item.getId()}">
+                    <div class="mb-3">
+                        <label class="form-label w-100">
+                            Class name:
+                            <input class="form-control" name="name">
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="w-100" >Teacher:
+                            <select  class="form-select" name="teacher" id="teacher" >
+                                <option th:each="item: ${schoolTeachers}" th:value="${item.getId()}" th:text="${item.getFullname()}"></option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="w-100" >Members:
+                            <input  id="search" onkeyup="findmembers(event)"   type="text" class="form-control"></label>
+                        <ul class="chooseList" id="members">
+
+                        </ul>
+                        <div class="result row" id="result">
+
+                        </div>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button form="createClassForm"  class="btn btn-success">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:if="${teacher!=null && isDirector!=null&&isDirector==true}" class="modal fade" id="addTeacher" tabindex="-1" aria-labelledby="exampleAddTeacher" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" >Add teacher</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="addteacher" method="post" id="addTeacherForm">
+                    <input type="hidden" name="school" th:value="${item.getId()}">
+                    <div>
+                        <label class="form-label w-100">
+                            Fullname:
+                            <input class="form-control" name="fullname">
+                        </label>
+                    </div>
+                    <div>
+                        <label class="form-label w-100">
+                            Teacher login:
+                            <input class="form-control" name="login">
+                        </label>
+                    </div>
+                    <div class="form-check ms-1">
+                        <input class="form-check-input" name="isDirector" type="checkbox"  id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Is director?
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button form="addTeacherForm"  class="btn btn-success">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:if="${subject!=null && isDirector!=null&&isDirector==true}" class="modal fade" id="addSubject" tabindex="-1" aria-labelledby="exampleAddSubject" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" >Add subject</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="addsubject" method="post" id="addSubjectForm">
+                    <input type="hidden" name="school" th:value="${item.getId()}">
+                    <div class="mb-3"><label  class="form-label w-100">Subjects:
+                        <input id="searchSubj" onkeyup="findSubjects(event)"  type="text" class="form-control"></label>
+                        <ul class="chooseList" id="subjects">
+
+                        </ul>
+                        <div class="result row" id="resultSubj">
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button form="addSubjectForm"  class="btn btn-success">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <th:block th:insert="sections/userPanelMenu ::userPanelMenu">
@@ -23,7 +162,7 @@
                 <div ><label class="fw-bold fs-5 me-3">Members: </label><label class="fs-5" th:text="${item.getMembers().size()}"></label></div>
             </div>
             <div class="row p-4 border ">
-                <div class="school-content">
+                <div class="school-content overflow-y">
                     <div class="row">
                         <div class="btn-group ">
                             <a th:href="'?class_=0'+${choose!=null?'&choose='+choose:''}"   th:class="'btn  '+${(teacher==null&&class_==null&&subject==null&&member==null)||   class_!=null?'btn-primary':'btn-secondary'}">Classes</a>
@@ -33,7 +172,20 @@
                         </div>
 
                     </div>
+
                     <div class="row overflow-y">
+                        <div th:if="${member!=null&& isDirector!=null&&isDirector==true}" class="p-0 mt-3">
+                            <button class="btn btn-outline-success w-100" data-bs-toggle="modal" data-bs-target="#addMember">Add member</button>
+                        </div>
+                        <div th:if="${(teacher==null&&class_==null&&subject==null&&member==null)||class_!=null&& isDirector!=null&&isDirector==true}" class="p-0 mt-3">
+                            <button class="btn btn-outline-success w-100" data-bs-toggle="modal" data-bs-target="#createClass">Create class</button>
+                        </div>
+                        <div th:if="${teacher!=null&& isDirector!=null&&isDirector==true}" class="p-0 mt-3">
+                            <button class="btn btn-outline-success w-100" data-bs-toggle="modal" data-bs-target="#addTeacher">Add teacher</button>
+                        </div>
+                        <div th:if="${subject!=null&& isDirector!=null&&isDirector==true}" class="p-0 mt-3">
+                            <button class="btn btn-outline-success w-100" data-bs-toggle="modal" data-bs-target="#addSubject">Add subject</button>
+                        </div>
                         <table class="table table-striped">
                             <thead >
                                 <tr th:if="${(teacher==null&&class_==null&&subject==null&&member==null)||class_!=null}">
@@ -42,25 +194,27 @@
                                     <th>School</th>
                                     <th>Teacher</th>
                                     <th>Members</th>
-                                    <th></th>
+<!--                                    <th></th>-->
                                 </tr>
                                 <tr th:if="${teacher!=null}">
                                     <th>Id</th>
+                                    <th>Login</th>
                                     <th>Fullname</th>
                                     <th>Is director?</th>
                                     <th>Classes</th>
                                     <th>Lessons</th>
-                                    <th></th>
+<!--                                    <th></th>-->
                                 </tr>
                                 <tr th:if="${subject!=null}">
                                     <th>Id</th>
                                     <th>Name</th>
-                                    <th></th>
+<!--                                    <th></th>-->
                                 </tr>
                                 <tr th:if="${member!=null}">
                                     <th>Id</th>
                                     <th>Fullname</th>
-                                    <th></th>
+                                    <th>Class</th>
+<!--                                    <th></th>-->
                                 </tr>
 
                             </thead>
@@ -71,16 +225,17 @@
                                 <td th:text="${item.getSchool().getName()}"></td>
                                 <td th:text="${item.getTeacher()!=null?item.getTeacher().getFullname():'-'}"></td>
                                 <td th:text="${item.getMembers().size()}"></td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
-                                        <a href="" class="btn btn-outline-primary">Details</a>
-                                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete</a>
-                                    </div>
-                                </td>
+<!--                                <td>-->
+<!--                                    <div class="btn-group">-->
+<!--                                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>-->
+<!--                                        <a href="" class="btn btn-outline-primary">Details</a>-->
+<!--                                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete</a>-->
+<!--                                    </div>-->
+<!--                                </td>-->
                             </tr>
                             <tr th:each="item: ${teachers}">
                                 <td th:text="${item.getId()}"></td>
+                                <td th:text="${item.getUser().getLogin()}"></td>
                                 <td th:text="${item.getFullname()}"></td>
                                 <td th:text="${item.isDirector}"></td>
                                 <td >
@@ -94,34 +249,35 @@
                                     </div>
                                 </td>
 
-                                <td>
-                                    <div class="btn-group">
-                                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
-                                        <a href="" class="btn btn-outline-primary">Details</a>
-                                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete</a>
-                                    </div>
-                                </td>
+<!--                                <td>-->
+<!--                                    <div class="btn-group">-->
+<!--                                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>-->
+<!--                                        <a href="" class="btn btn-outline-primary">Details</a>-->
+<!--                                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete</a>-->
+<!--                                    </div>-->
+<!--                                </td>-->
                             </tr>
                             <tr th:each="item: ${subjects}">
                                 <td th:text="${item.getId()}"></td>
                                 <td th:text="${item.getSubject().getName()}"></td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a th:href="'/admin/subjects/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
-                                        <a th:href="'/admin/subjects/delete/'+${item.getId()}"  class="btn btn-outline-danger">Delete</a>
-                                    </div>
-                                </td>
+<!--                                <td>-->
+<!--                                    <div class="btn-group">-->
+<!--                                        <a th:href="'/admin/subjects/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>-->
+<!--                                        <a th:href="'/admin/subjects/delete/'+${item.getId()}"  class="btn btn-outline-danger">Delete</a>-->
+<!--                                    </div>-->
+<!--                                </td>-->
                             </tr>
                             <tr th:each="item: ${members}">
                                 <td th:text="${item.getId()}"></td>
                                 <td th:text="${item.getFullname()}"></td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>
-                                        <a href="" class="btn btn-outline-primary">Details</a>
-                                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete from school</a>
-                                    </div>
-                                </td>
+                                <td th:text="${item.getSchoolClass()!=null?item.getSchoolClass().getName():'-'}"></td>
+<!--                                <td>-->
+<!--                                    <div class="btn-group">-->
+<!--                                        <a th:href="'/admin/classes/edit/'+${item.getId()}" class="btn btn-outline-warning">Edit</a>-->
+<!--                                        <a href="" class="btn btn-outline-primary">Details</a>-->
+<!--                                        <a th:href="'/admin/classes/delete/'+${item.getId()}" class="btn btn-outline-danger">Delete from school</a>-->
+<!--                                    </div>-->
+<!--                                </td>-->
                             </tr>
                             </tbody>
                         </table>
@@ -132,7 +288,143 @@
         </div>
     </div>
 </div>
+<script th:inline="javascript" th:if="${(teacher==null&&class_==null&&subject==null&&member==null)||class_!=null&& isDirector!=null&&isDirector==true}">
+    let choosed = [];
+    /*<![CDATA[*/
+    let yourArray = /*[[${availableMembers}]]*/ [];
+    /*]]>*/
+    let memb = document.getElementById("members");
+    let result = document.getElementById("result");
+    let search = document.getElementById("search");
+    console.log(yourArray);
+    function addStartElements()
+    {
+        for(let i=0; i<yourArray.length;i++)
+        {
+            memb.innerHTML+=`<li class="membitem" id="membitem${yourArray[i].id}">${yourArray[i].fullname}</li>`
+        }
+        addEventOnMembItem();
+    }
+    addStartElements();
+    function addEventOnMembItem(){
+        $(`.membitem`).on("click",(event)=>{
+            let text = event.target.innerText;
+            let id = event.target.id;
 
+            memb.removeChild(memb.children.namedItem(id));
+            let itemId = id.slice(-id.length+8)
+            let obj = yourArray.find(t=>t.id==itemId);
+            choosed.push(obj);
+            yourArray = yourArray.filter(t=>t.id!=itemId);
+            // console.log(yourArray);
+            // console.log(choosed);
+            result.innerHTML+=`
+            <div class="resitem col col-6" id="resitem${obj.id}" >
+                <div class=" d-flex">
+                <input type="hidden" name="members" value="${obj.id}">
+                <h5 >${obj.fullname}</h5>
+                <div id="del${obj.id}" onclick="deletemembect(event)" class="cancelResBtn"><img class="w-100" src="https://examjava.blob.core.windows.net/icons/cancel.png"></div>
+                </div>
+            </div>
+            `
+            if(yourArray.length==0)
+                document.getElementById("search").disabled=true;
+
+        })
+    }
+
+    function deletemembect(e){
+        let id = e.currentTarget.id;
+        let membId = id.slice(-id.length+3);
+        let obj = choosed.find(t=>t.id==membId);
+        yourArray.push(obj);
+        choosed = choosed.filter(t=>t.id!=membId);
+        result.removeChild(result.children.namedItem(`resitem${obj.id}`));
+        if(yourArray.length>0&&document.getElementById("search").disabled)
+            document.getElementById("search").disabled=false;
+        findmembers();
+    }
+    let word ="";
+    function findmembers(e){
+        if(e!=null)
+        {
+            let searchWord = e.target.value;
+            word = searchWord;
+        }
+        let ar = yourArray.filter(t=>t.fullname.toLowerCase().includes(word.toLowerCase()))
+        memb.innerHTML="";
+        for(let i=0; i<ar.length;i++)
+        {
+            memb.innerHTML+=`<li class="membitem" id="membitem${ar[i].id}">${ar[i].fullname}</li>`
+        }
+        addEventOnMembItem();
+    }
+</script>
+<script th:inline="javascript" th:if="${subject!=null&& isDirector!=null&&isDirector==true}">
+    let choosed = [];
+    /*<![CDATA[*/
+    var yourArray = /*[[${availableSubjects}]]*/ [];
+    /*]]>*/
+    let subj = document.getElementById("subjects");
+    let res = document.getElementById("resultSubj");
+    for(let i=0; i<yourArray.length;i++)
+    {
+        subj.innerHTML+=`<li class="subjitem" id="subjitem${yourArray[i].id}">${yourArray[i].name}</li>`
+    }
+    function addEventOnSubjItem(){
+        $(`.subjitem`).on("click",(event)=>{
+            let text = event.target.innerText;
+            let id = event.target.id;
+
+            subj.removeChild(subj.children.namedItem(id));
+            let itemId = id.slice(-id.length+8)
+            let obj = yourArray.find(t=>t.id==itemId);
+            choosed.push(obj);
+            yourArray = yourArray.filter(t=>t.id!=itemId);
+            // console.log(yourArray);
+            // console.log(choosed);
+            res.innerHTML+=`
+            <div class="resitem col col-6" id="resitem${obj.id}" >
+                <div class=" d-flex">
+                <input type="hidden" name="subjects" value="${obj.id}">
+                <h5 >${obj.name}</h5>
+                <div id="del${obj.id}" onclick="deleteSubject(event)" class="cancelResBtn"><img class="w-100" src="https://examjava.blob.core.windows.net/icons/cancel.png"></div>
+                </div>
+            </div>
+            `
+            if(yourArray.length==0)
+                document.getElementById("searchSubj").disabled=true;
+
+        })
+    }
+    addEventOnSubjItem();
+    function deleteSubject(e){
+        let id = e.currentTarget.id;
+        let subjId = id.slice(-id.length+3);
+        let obj = choosed.find(t=>t.id==subjId);
+        yourArray.push(obj);
+        choosed = choosed.filter(t=>t.id!=subjId);
+        res.removeChild(res.children.namedItem(`resitem${obj.id}`));
+        if(yourArray.length>0&&document.getElementById("searchSubj").disabled)
+            document.getElementById("searchSubj").disabled=false;
+        findSubjects();
+    }
+    let word ="";
+    function findSubjects(e){
+        if(e!=null)
+        {
+            let searchWord = e.target.value;
+            word = searchWord;
+        }
+        let ar = yourArray.filter(t=>t.name.toLowerCase().includes(word.toLowerCase()))
+        subj.innerHTML="";
+        for(let i=0; i<ar.length;i++)
+        {
+            subj.innerHTML+=`<li class="subjitem" id="subjitem${ar[i].id}">${ar[i].name}</li>`
+        }
+        addEventOnSubjItem();
+    }
+</script>
 </body>
 <footer th:insert="sections/footer ::footer">
 
